@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System</title>
 
-<link rel="stylesheet" href="{{ asset('css/pos.css') }}">   
+<link rel="stylesheet" href="{{ asset('css/pos.css') }}"> 
+    @stack('styles')
+
 </head>
 
 <body>
 
     <!-- Sidebar -->
     <x-sidebar />
-
-    <!-- Main Content -->
     <main class="main-content">
 
         @yield('content')
