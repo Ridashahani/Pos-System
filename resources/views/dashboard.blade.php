@@ -49,7 +49,6 @@
         <div class="chart-box">
             <h4>Sales vs Purchases (Monthly)</h4>
             <div class="line-placeholder">
-                {{-- yahan chahe to chart.js laga sakte ho baad mein --}}
                 <p class="placeholder-text">Chart area (static)</p>
             </div>
         </div>
