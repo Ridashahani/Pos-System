@@ -103,6 +103,7 @@
         </div>
         <div class="nav-children" id="settings-menu">
             <a href="#" class="nav-link">Users/Roles</a>
+            <a href="#" class="nav-link">Branches</a>
           
         </div>
 
