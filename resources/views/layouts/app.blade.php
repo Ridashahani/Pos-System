@@ -16,27 +16,8 @@
     <!-- Sidebar -->
     <x-sidebar />
     <main class="main-content">
-
         @yield('content')
-
     </main>
-
-
-    {{-- <style>
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f8;
-        }
-
-        .main-content {
-            margin-left: 300px;
-            padding: 30px;
-            min-height: 100vh;
-        }
-
-    </style> --}}
 
 </body>
 
