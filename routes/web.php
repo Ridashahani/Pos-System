@@ -28,3 +28,7 @@ Route::get('/stock/transfer', function () {
 Route::resource('categories', CategoryController::class);
 Route::resource('subcategories', SubcategoryController::class);
 // Route::view('/category', 'category.index');
+
+Route::resource('products', ProductController::class);
+Route::resource('vendors', VendorController::class);
+Route::resource('branches', BranchController::class);
