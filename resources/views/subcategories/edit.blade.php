@@ -1,0 +1,230 @@
+{{-- resources/views/subcategories/edit.blade.php --}}
+@extends('layouts.app')
+
+@push('styles')
+<style>
+    .modal-page-wrap {
+        display: flex;
+        justify-content: center;
+        padding-top: 24px;
+    }
+
+    .modal-card {
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        width: 100%;
+        max-width: 900px;
+        overflow: hidden;
+    }
+
+    .modal-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px 28px;
+        border-bottom: 1px solid #edebf3;
+    }
+
+    .modal-header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .modal-icon-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: #f5a524;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    .modal-icon-badge svg {
+        width: 20px;
+        height: 20px;
+        stroke: #1f2937;
+    }
+
+    .modal-eyebrow {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        color: #f5a524;
+        margin: 0 0 2px;
+        text-transform: uppercase;
+    }
+    .modal-title {
+        font-size: 22px;
+        font-weight: 800;
+        color: #111827;
+        margin: 0;
+    }
+
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 9px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .btn-back:hover { background: #f9fafb; }
+    .btn-back svg { width: 14px; height: 14px; }
+
+    .modal-body {
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .form-group {
+        max-width: 420px;
+    }
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 14px;
+        box-sizing: border-box;
+        background: #fff;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #f5a524;
+        box-shadow: 0 0 0 3px rgba(245,165,36,0.15);
+    }
+    .form-group input.is-invalid,
+    .form-group select.is-invalid {
+        border-color: #f87171;
+    }
+    .error-text {
+        color: #ef4444;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 20px 28px;
+        border-top: 1px solid #edebf3;
+    }
+
+    .btn-secondary {
+        background: #fff;
+        color: #374151;
+        border: 1px solid #d1d5db;
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .btn-secondary:hover { background: #f9fafb; }
+
+    .btn-save {
+        background: #f5a524;
+        color: #1f2937;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+    .btn-save:hover { background: #e6980f; }
+</style>
+@endpush
+
+@section('content')
+<div class="modal-page-wrap">
+    <div class="modal-card">
+
+        <div class="modal-card-header">
+            <div class="modal-header-left">
+                <div class="modal-icon-badge">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3H3v6h6V3zM21 3h-6v6h6V3zM9 15H3v6h6v-6zM21 15h-6v6h6v-6z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="modal-eyebrow">Editing Record</p>
+                    <h1 class="modal-title">Edit — Subcategory</h1>
+                </div>
+            </div>
+
+            <a href="{{ route('subcategories.index') }}" class="btn-back">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back
+            </a>
+        </div>
+
+        <form method="POST" action="{{ route('subcategories.update', $subcategory) }}">
+            @csrf
+            @method('PUT')
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name">Subcategory Name</label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ old('name', $subcategory->name) }}"
+                        class="{{ $errors->has('name') ? 'is-invalid' : '' }}"
+                        autofocus
+                    >
+                    @error('name')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="category_id">Parent Category</label>
+                    <select id="category_id" name="category_id" class="{{ $errors->has('category_id') ? 'is-invalid' : '' }}">
+                        <option value="">— Select Category —</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ old('category_id', $subcategory->category_id) == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('category_id')
+                        <div class="error-text">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a href="{{ route('subcategories.index') }}" class="btn-secondary">Cancel</a>
+                <button type="submit" class="btn-save">Save Changes</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+@endsection

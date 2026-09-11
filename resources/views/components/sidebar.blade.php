@@ -19,7 +19,7 @@
 
         {{-- Dashboard --}}
         <a href="{{ url('/') }}"
-            class="dashboard-link active min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] no-underline text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]">
+            class="dashboard-link {{ request()->is('/') ? 'active' : '' }} min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] no-underline text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]">
             <span class="flex items-center gap-3">
                 <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2">
@@ -30,8 +30,9 @@
             </span>
         </a>
 
+        @php $inventoryActive = request()->is('categories*', 'subcategories*', 'products*'); @endphp
         {{-- Inventory Dropdown --}}
-        <div class="nav-parent min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]"
+        <div class="nav-parent {{ $inventoryActive ? 'active' : '' }} min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]"
             onclick="toggleMenu('inventory-menu', this)">
             <span class="flex items-center gap-3">
                 <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -41,15 +42,15 @@
                 </svg>
                 Inventory
             </span>
-            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]">&#9654;</span>
+            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]" {{ $inventoryActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
         </div>
-        <div class="hidden flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="inventory-menu">
+        <div class="{{ $inventoryActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="inventory-menu">
             <a href="/categories"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Category</a>
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('categories*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Category</a>
             <a href="/subcategories"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Subcategory</a>
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('subcategories*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Subcategory</a>
             <a href="/products"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Products</a>
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('products*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Products</a>
         </div>
 
         {{-- Stock Dropdown --}}
