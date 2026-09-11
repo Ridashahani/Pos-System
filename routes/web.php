@@ -7,3 +7,15 @@ Route::get('/', function () {
 });
 
 // Route::view('/category', 'category.index');
+
+Route::get('/stock/in', function () {
+    return view('stock.stock-in');
+});
+
+Route::get('/stock/out', function () {
+    return view('stock.stock-out');
+});
+
+Route::get('/stock/transfer', function () {
+    return view('stock.stock-transfer');
+});
