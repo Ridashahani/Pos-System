@@ -155,8 +155,9 @@
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Payments</a>
         </div>
 
+        @php $settingsActive = request()->is('vendors*', 'branches*'); @endphp
         {{-- Settings Dropdown --}}
-        <div class="nav-parent min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]"
+        <div class="nav-parent {{ $settingsActive ? 'active' : '' }} min-h-[46px] flex items-center justify-between px-4 text-[#8a8698] text-[14.5px] font-medium rounded-xl cursor-pointer transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] [&.active]:bg-[#6c63ff] [&.active]:text-white [&.active]:shadow-[0_8px_16px_rgba(108,99,255,0.28)]"
             onclick="toggleMenu('settings-menu', this)">
             <span class="flex items-center gap-3">
                 <svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -167,13 +168,15 @@
                 </svg>
                 Settings
             </span>
-            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]">&#9654;</span>
+            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]" {{ $settingsActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
         </div>
-        <div class="hidden flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="settings-menu">
+        <div class="{{ $settingsActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="settings-menu">
+            <a href="/vendors"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('vendors*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Vendors</a>
+            <a href="/branches"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('branches*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Branches</a>
             <a href="#"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Users/Roles</a>
-            <a href="#"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Branches</a>
         </div>
 
     </div>
