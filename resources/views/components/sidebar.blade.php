@@ -93,9 +93,10 @@
             <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]">&#9654;</span>
         </div>
         <div class="hidden flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="purchase-menu">
-            <a href="#"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Purchase
-                Invoice</a>
+            <a href="{{ route('purchases.index') }}"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">
+                Purchase Invoice
+            </a>
             <a href="#"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Suppliers</a>
             <a href="#"
