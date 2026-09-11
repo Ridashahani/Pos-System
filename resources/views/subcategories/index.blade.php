@@ -1,4 +1,4 @@
-{{-- resources/views/categories/index.blade.php --}}
+{{-- resources/views/subcategories/index.blade.php --}}
 @extends('layouts.app')
 
 @push('styles')
@@ -124,43 +124,45 @@
 @section('content')
 
 <div class="page-header">
-    <h1>Category</h1>
-    <p>Top-level product categories — manage them here.</p>
+    <h1>Subcategory</h1>
+    <p>Product subcategories grouped under a parent category.</p>
 </div>
 
 <div class="toolbar">
     <div class="toolbar-left">
         <form method="GET">
             <input type="text" name="search" value="{{ request('search') }}"
-                   class="search-input" placeholder="Search category...">
+                   class="search-input" placeholder="Search subcategory...">
         </form>
-        <div class="record-badge">{{ $categories->count() }} records</div>
+        <div class="record-badge">{{ $subcategories->count() }} records</div>
     </div>
 
-    <a href="{{ route('categories.create') }}" class="btn-add">+ Add Category</a>
+    <a href="{{ route('subcategories.create') }}" class="btn-add">+ Add Subcategory</a>
 </div>
 
 <div class="table-wrap">
     <table class="data-table">
         <thead>
             <tr>
-                <th>Category Name</th>
+                <th>Subcategory Name</th>
+                <th>Parent Category</th>
                 <th class="actions-col">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($categories as $category)
+            @forelse ($subcategories as $subcategory)
                 <tr>
-                    <td>{{ $category->name }}</td>
+                    <td>{{ $subcategory->name }}</td>
+                    <td>{{ $subcategory->category->name ?? '—' }}</td>
                     <td class="actions-cell">
-                        <a href="{{ route('categories.edit', $category) }}" class="icon-btn edit" title="Edit">
+                        <a href="{{ route('subcategories.edit', $subcategory) }}" class="icon-btn edit" title="Edit">
                             <svg fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/>
                             </svg>
                         </a>
-                        <form action="{{ route('categories.destroy', $category) }}" method="POST"
+                        <form action="{{ route('subcategories.destroy', $subcategory) }}" method="POST"
                               style="display:inline;"
-                              onsubmit="return confirm('Delete this category?');">
+                              onsubmit="return confirm('Delete this subcategory?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="icon-btn delete" title="Delete">
@@ -173,7 +175,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="2" class="empty-row">No categories found.</td>
+                    <td colspan="3" class="empty-row">No subcategories found.</td>
                 </tr>
             @endforelse
         </tbody>
@@ -181,8 +183,3 @@
 </div>
 
 @endsection
-
-
-<!-- Routes -->
-<!--  -->
-
