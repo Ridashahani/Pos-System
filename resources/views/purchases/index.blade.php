@@ -9,15 +9,21 @@
             </div>
         </div>
 
+        @if (session('success'))
+            <div class="bg-green-50 border border-green-200 text-green-700 text-sm px-4 py-3 rounded-lg mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="flex justify-between items-center mb-4">
             <input type="text" placeholder="Search purchases..."
-                class="border border-gray-300 rounded-lg px-4 py-2 w-72 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400">
+                class="border border-gray-300 rounded-lg px-4 py-2 w-72 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
 
             <div class="flex items-center gap-3">
                 <span class="text-sm text-gray-500">{{ $purchases->count() }} records</span>
                 <a href="{{ route('purchases.create') }}"
-                    class="bg-[#6c63ff] hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg">
-                    + Add Purchases
+                    class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-lg">
+                    + Add Purchase
                 </a>
             </div>
         </div>
@@ -37,19 +43,19 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
-                    @foreach ($purchases as $purchase)
+                    @forelse ($purchases as $purchase)
                         <tr class="hover:bg-gray-50">
                             <td class="px-4 py-3">{{ $purchase->date->format('Y-m-d') }}</td>
-                            <td class="px-4 py-3">{{ $purchase->supplier->name }}</td>
-                            <td class="px-4 py-3">{{ $purchase->branch->name }}</td>
+                            <td class="px-4 py-3">{{ $purchase->supplier->name ?? '—' }}</td>
+                            <td class="px-4 py-3">{{ $purchase->branch->name ?? '—' }}</td>
                             <td class="px-4 py-3">
                                 @foreach ($purchase->items as $item)
-                                    {{ $item->product->name }} x{{ $item->quantity }}@if (!$loop->last)
+                                    {{ $item->product->name ?? 'Product' }} x{{ $item->quantity }}@if (!$loop->last)
                                         ,
                                     @endif
                                 @endforeach
                             </td>
-                            <td class="px-4 py-3">{{ $purchase->items->sum('quantity') }}</td>
+                            <td class="px-4 py-3">{{ $purchase->total_qty }}</td>
                             <td class="px-4 py-3">Rs {{ number_format($purchase->avg_cost) }}</td>
                             <td class="px-4 py-3">
                                 <span @class([
@@ -62,24 +68,26 @@
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-right">
-                                <a href="{{ route('purchases.edit', 1) }}"
-                                    class="text-gray-400 hover:text-blue-500 mr-3">
-                                    ✏️
+                                <a href="{{ route('purchases.edit', $purchase->id) }}"
+                                    class="text-gray-400 hover:text-blue-500 mr-3"> <i class="fa-solid fa-pen"></i>
                                 </a>
-                                <form action="{{ route('purchases.destroy', 1) }}" method="POST" class="inline"
-                                    onsubmit="return confirm('Delete this purchase?')">
+                                <form action="{{ route('purchases.destroy', $purchase->id) }}" method="POST"
+                                    class="inline" onsubmit="return confirm('Delete this purchase?')">
                                     @csrf
                                     @method('DELETE')
-
-                                    <button type="submit" class="text-gray-400 hover:text-red-500">
-                                        🗑️
+                                    <button type="submit" class="text-gray-400 hover:text-red-500"> <i
+                                            class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @empty
+                            <tr>
+                                <td colspan="8" class="px-4 py-8 text-center text-gray-400">No purchases yet.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-@endsection
+    @endsection

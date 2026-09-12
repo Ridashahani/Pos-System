@@ -2,97 +2,164 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Http\Requests\PurchaseRequest;
+use App\Models\Branch;
+use App\Models\Product;
+use App\Models\Purchase;
+use App\Models\Supplier;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of purchases.
      */
     public function index()
     {
-        $purchases = collect([
-            (object)[
-                'date' => Carbon::parse('2026-08-20'),
-                'supplier' => (object)['name' => 'Al-Karam Mobile Traders'],
-                'branch' => (object)['name' => 'Saddar Main Branch'],
-                'items' => collect([
-                    (object)['product' => (object)['name' => 'Samsung Galaxy A15'], 'quantity' => 3],
-                ]),
-                'avg_cost' => 38000,
-                'payment_status' => 'partial',
-            ],
-            (object)[
-                'date' => Carbon::parse('2026-08-18'),
-                'supplier' => (object)['name' => 'Rehman Accessories Wholesale'],
-                'branch' => (object)['name' => 'Saddar Main Branch'],
-                'items' => collect([
-                    (object)['product' => (object)['name' => 'Fast Charger 20W'], 'quantity' => 40],
-                ]),
-                'avg_cost' => 650,
-                'payment_status' => 'paid',
-            ],
-            (object)[
-                'date' => Carbon::parse('2026-08-27'),
-                'supplier' => (object)['name' => 'Global Gadget Importers'],
-                'branch' => (object)['name' => 'Commercial Market Branch'],
-                'items' => collect([
-                    (object)['product' => (object)['name' => 'Wireless Earbuds X200'], 'quantity' => 15],
-                ]),
-                'avg_cost' => 1800,
-                'payment_status' => 'due',
-            ],
-        ]);
+        $purchases = Purchase::with([
+            'supplier',
+            'branch',
+            // 'items.product'
+        ])
+            ->latest()
+            ->get();
 
         return view('purchases.index', compact('purchases'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new purchase.
      */
     public function create()
     {
-        return view('purchases.create');
+        return view('purchases.create', [
+            // 'products' => Product::all(),
+            'suppliers' => Supplier::all(),
+            'branches' => Branch::all(),
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created purchase.
      */
-    public function store(Request $request)
+    public function store(PurchaseRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        DB::transaction(function () use ($validated) {
+
+            $supplierId = $validated['supplier_id'] ?? null;
+
+            // If existing supplier is not selected,
+            // create a new supplier
+            if (!$supplierId) {
+
+                $supplier = Supplier::create([
+                    'name' => $validated['new_supplier_name'],
+                    'phone' => $validated['new_supplier_phone'] ?? null,
+                    'address' => $validated['new_supplier_address'] ?? null,
+                ]);
+
+                $supplierId = $supplier->id;
+            }
+            $purchase = Purchase::create([
+                'supplier_id' => $supplierId,
+                'branch_id' => $validated['branch_id'],
+                'date' => $validated['date'],
+                'payment_status' => $validated['payment_status'],
+                'amount_paid' => $validated['amount_paid'] ?? 0,
+            ]);
+
+            foreach ($validated['products'] as $row) {
+
+                $purchase->items()->create([
+                    // 'product_id' => $row['product_id'],
+                    'quantity' => $row['quantity'],
+                    'cost_price' => $row['cost_price'],
+                ]);
+            }
+        });
+
+        return redirect()
+            ->route('purchases.index')
+            ->with('success', 'Purchase saved successfully.');
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified purchase.
      */
     public function edit(string $id)
     {
-        //
+        $purchase = Purchase::with('items')
+            ->findOrFail($id);
+
+        return view('purchases.edit', [
+            'purchase' => $purchase,
+            // 'products' => Product::all(),
+            'suppliers' => Supplier::all(),
+            'branches' => Branch::all(),
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified purchase.
      */
-    public function update(Request $request, string $id)
+    public function update(PurchaseRequest $request, string $id)
     {
-        //
+        $validated = $request->validated();
+
+        $purchase = Purchase::findOrFail($id);
+
+        DB::transaction(function () use ($validated, $purchase) {
+
+            $supplierId = $validated['supplier_id'] ?? null;
+            if (!$supplierId) {
+
+                $supplier = Supplier::create([
+                    'name' => $validated['new_supplier_name'],
+                    'phone' => $validated['new_supplier_phone'] ?? null,
+                    'address' => $validated['new_supplier_address'] ?? null,
+                ]);
+
+                $supplierId = $supplier->id;
+            }
+
+            $purchase->update([
+                'supplier_id' => $supplierId,
+                'branch_id' => $validated['branch_id'],
+                'date' => $validated['date'],
+                'payment_status' => $validated['payment_status'],
+                'amount_paid' => $validated['amount_paid'] ?? 0,
+            ]);
+
+            $purchase->items()->delete();
+
+            // foreach ($validated['products'] as $row) {
+
+            //     $purchase->items()->create([
+            //         'product_id' => $row['product_id'],
+            //         'quantity' => $row['quantity'],
+            //         'cost_price' => $row['cost_price'],
+            //     ]);
+            // }
+        });
+
+        return redirect()
+            ->route('purchases.index')
+            ->with('success', 'Purchase updated successfully.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified purchase.
      */
     public function destroy(string $id)
     {
-        //
+        $purchase = Purchase::findOrFail($id);
+
+        $purchase->delete();
+
+        return redirect()
+            ->route('purchases.index')
+            ->with('success', 'Purchase deleted.');
     }
 }
