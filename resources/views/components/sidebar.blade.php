@@ -42,9 +42,11 @@
                 </svg>
                 Inventory
             </span>
-            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]" {{ $inventoryActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
+            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]"
+                {{ $inventoryActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
         </div>
-        <div class="{{ $inventoryActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="inventory-menu">
+        <div class="{{ $inventoryActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]"
+            id="inventory-menu">
             <a href="/categories"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('categories*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Category</a>
             <a href="/subcategories"
@@ -94,10 +96,11 @@
             <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]">&#9654;</span>
         </div>
         <div class="hidden flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="purchase-menu">
-            <a href="#"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Purchase
-                Invoice</a>
-            <a href="#"
+            <a href="{{ route('purchases.index') }}"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">
+                Purchase Invoice
+            </a>
+            <a href="suppliers"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Suppliers</a>
             <a href="#"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Purchase
@@ -167,15 +170,21 @@
                 </svg>
                 Settings
             </span>
-            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]" {{ $settingsActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
+            <span class="arrow text-[11px] transition-transform duration-[250ms] text-[#8a8698]"
+                {{ $settingsActive ? 'style=transform:rotate(90deg)' : '' }}>&#9654;</span>
         </div>
-        <div class="{{ $settingsActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]" id="settings-menu">
+        <div class="{{ $settingsActive ? 'flex' : 'hidden' }} flex-col pl-[30px] mt-[2px] mb-[6px] gap-[2px]"
+            id="settings-menu">
             <a href="/vendors"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('vendors*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Vendors</a>
             <a href="/branches"
                 class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff] {{ request()->is('branches*') ? 'bg-[#efedff] text-[#6c63ff] font-semibold' : 'text-[#8a8698]' }}">Branches</a>
-            <a href="#"
-                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">Users/Roles</a>
+            <a href="users"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">
+                Roles/Users</a>
+            {{-- <a href="roles"
+                class="min-h-[36px] flex items-center px-3 text-[13.5px] font-normal rounded-lg text-[#8a8698] no-underline transition-all duration-150 hover:bg-[#efedff] hover:text-[#6c63ff]">
+                Roles/</a> --}}
         </div>
 
     </div>
