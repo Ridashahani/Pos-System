@@ -12,7 +12,7 @@ class Product extends Model
 
     protected $fillable = [
         'type', 'vendor_id', 'category_id', 'subcategory_id',
-        'quantity', 'purchase_price', 'sell_price', 'image', 'total_purchase_amount',
+        'quantity', 'total_purchase_amount',
     ];
 
     public function vendor()      { return $this->belongsTo(Vendor::class); }
