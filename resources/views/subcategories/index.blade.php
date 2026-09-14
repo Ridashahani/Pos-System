@@ -47,8 +47,8 @@
         white-space: nowrap;
     }
     .btn-add {
-        background: #f5a524;
-        color: #1f2937;
+        background: #2B7FFF;
+        color: white;
         border: none;
         padding: 11px 20px;
         border-radius: 8px;
@@ -57,7 +57,7 @@
         text-decoration: none;
         cursor: pointer;
     }
-    .btn-add:hover { background: #e6980f; }
+    .btn-add:hover { background: oklch(54.6% 0.245 262.881); }
 
     .table-wrap {
         background: #fff;
