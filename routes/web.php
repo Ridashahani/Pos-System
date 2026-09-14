@@ -8,6 +8,7 @@ use App\Http\Controllers\SubcategoryController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,7 +22,7 @@ Route::resource('subcategories', SubcategoryController::class);
 // Route::view('/category', 'category.index');
 Route::resource('categories', CategoryController::class);
 Route::resource('subcategories', SubcategoryController::class);
-// Route::resource('products', ProductController::class);
+Route::resource('products', ProductController::class);
 Route::resource('vendors', VendorController::class);
 Route::resource('branches', BranchController::class);
 Route::resource('users', UserController::class);
