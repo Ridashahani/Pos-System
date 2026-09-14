@@ -10,8 +10,8 @@
     .search-input { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 14px; width: 220px; }
     .filter-select { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 14px; }
     .record-badge { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 16px; font-size: 14px; color: #374151; white-space: nowrap; }
-    .btn-add { background: #f5a524; color: #1f2937; border: none; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; }
-    .btn-add:hover { background: #e6980f; }
+    .btn-add { background: #2B7FFF; color: white; border: none; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; }
+    .btn-add:hover { background: oklch(54.6% 0.245 262.881); }
     .table-wrap { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
     table.data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
     table.data-table thead { background: #f3f4f6; }
