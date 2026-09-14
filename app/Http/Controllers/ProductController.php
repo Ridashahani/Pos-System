@@ -29,21 +29,13 @@ class ProductController extends Controller
 
     public function store(StoreProductRequest $request)
     {
-        $data = $request->safe()->except('items');
+        $product = Product::create($request->safe()->except('items'));
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
-
-        $product = Product::create($data);
-
-        if ($request->type === 'mobile') {
-            foreach ($request->validated()['items'] as $i => $item) {
-                if ($request->hasFile("items.{$i}.image")) {
-                    $item['image'] = $request->file("items.{$i}.image")->store('products', 'public');
-                }
-                $product->items()->create($item);
+        foreach ($request->validated()['items'] as $i => $item) {
+            if ($request->hasFile("items.{$i}.image")) {
+                $item['image'] = $request->file("items.{$i}.image")->store('products', 'public');
             }
+            $product->items()->create($item);
         }
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
@@ -56,22 +48,14 @@ class ProductController extends Controller
 
     public function update(StoreProductRequest $request, Product $product)
     {
-        $data = $request->safe()->except('items');
+        $product->update($request->safe()->except('items'));
 
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
-        }
-
-        $product->update($data);
-
-        if ($request->type === 'mobile') {
-            $product->items()->delete();
-            foreach ($request->validated()['items'] as $i => $item) {
-                if ($request->hasFile("items.{$i}.image")) {
-                    $item['image'] = $request->file("items.{$i}.image")->store('products', 'public');
-                }
-                $product->items()->create($item);
+        $product->items()->delete();
+        foreach ($request->validated()['items'] as $i => $item) {
+            if ($request->hasFile("items.{$i}.image")) {
+                $item['image'] = $request->file("items.{$i}.image")->store('products', 'public');
             }
+            $product->items()->create($item);
         }
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');

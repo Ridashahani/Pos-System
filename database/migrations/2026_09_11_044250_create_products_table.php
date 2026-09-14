@@ -15,15 +15,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subcategory_id')->constrained()->cascadeOnDelete();
             $table->unsignedInteger('quantity');
-
-            // Accessory-only
-            $table->decimal('purchase_price', 12, 2)->nullable();
-            $table->decimal('sell_price', 12, 2)->nullable();
-            $table->string('image')->nullable();
-
-            // Mobile-only
             $table->decimal('total_purchase_amount', 12, 2)->nullable();
-
             $table->softDeletes();
             $table->timestamps();
         });
