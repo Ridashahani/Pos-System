@@ -7,7 +7,8 @@
     .page-header p { font-size: 14px; color: #6b7280; margin: 0; }
     .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .toolbar-left { display: flex; align-items: center; gap: 12px; }
-    .search-input { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 14px; width: 260px; }
+    .search-input { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 14px; width: 220px; }
+    .filter-select { border: 1px solid #e5e7eb; background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 14px; }
     .record-badge { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 16px; font-size: 14px; color: #374151; white-space: nowrap; }
     .btn-add { background: #2B7FFF; color: white; border: none; padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer; }
     .btn-add:hover { background: oklch(54.6% 0.245 262.881); }
@@ -20,6 +21,9 @@
     table.data-table tbody tr:hover { background: #fafafa; }
     table.data-table td { padding: 16px 24px; color: #1f2937; }
     td.actions-cell { text-align: right; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-mobile { background: #ede9fe; color: #6d28d9; }
+    .badge-accessory { background: #fef3c7; color: #92400e; }
     .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; cursor: pointer; margin-left: 6px; }
     .icon-btn.edit:hover { background: #eef2ff; border-color: #c7d2fe; }
     .icon-btn.delete:hover { background: #fef2f2; border-color: #fecaca; }
@@ -30,41 +34,50 @@
 
 @section('content')
 <div class="page-header">
-    <h1>Vendors</h1>
-    <p>Manage your product vendors here.</p>
+    <h1>Products</h1>
+    <p>Manage accessories and mobile products.</p>
 </div>
 
 <div class="toolbar">
     <div class="toolbar-left">
-        <form method="GET">
+        <form method="GET" style="display:flex;gap:10px;">
             <input type="text" name="search" value="{{ request('search') }}" class="search-input" placeholder="Search vendor...">
+            <select name="type" class="filter-select" onchange="this.form.submit()">
+                <option value="">All Types</option>
+                <option value="accessory" {{ request('type') === 'accessory' ? 'selected' : '' }}>Accessory</option>
+                <option value="mobile" {{ request('type') === 'mobile' ? 'selected' : '' }}>Mobile</option>
+            </select>
         </form>
-        <div class="record-badge">{{ $vendors->count() }} records</div>
+        <div class="record-badge">{{ $products->total() }} records</div>
     </div>
-    <a href="{{ route('vendors.create') }}" class="btn-add">+ Add Vendor</a>
+    <a href="{{ route('products.create') }}" class="btn-add">+ Add Product</a>
 </div>
 
 <div class="table-wrap">
     <table class="data-table">
         <thead>
             <tr>
-                <th>Vendor Name</th>
-                <th>Phone</th>
-                <th>CNIC</th>
+                <th>Type</th>
+                <th>Vendor</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Qty</th>
                 <th class="actions-col">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($vendors as $vendor)
+            @forelse ($products as $product)
                 <tr>
-                    <td>{{ $vendor->name }}</td>
-                    <td>{{ $vendor->phone }}</td>
-                    <td>{{ $vendor->cnic }}</td>
+                    <td><span class="badge badge-{{ $product->type }}">{{ ucfirst($product->type) }}</span></td>
+                    <td>{{ $product->vendor->name ?? '—' }}</td>
+                    <td>{{ $product->category->name ?? '—' }}</td>
+                    <td>{{ $product->subcategory->name ?? '—' }}</td>
+                    <td>{{ $product->quantity }}</td>
                     <td class="actions-cell">
-                        <a href="{{ route('vendors.edit', $vendor) }}" class="icon-btn edit" title="Edit">
+                        <a href="{{ route('products.edit', $product) }}" class="icon-btn edit" title="Edit">
                             <svg fill="none" stroke="#4f46e5" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z"/></svg>
                         </a>
-                        <form action="{{ route('vendors.destroy', $vendor) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this vendor?');">
+                        <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this product?');">
                             @csrf @method('DELETE')
                             <button type="submit" class="icon-btn delete" title="Delete">
                                 <svg fill="none" stroke="#dc2626" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397M4.772 5.79c.34-.059.68-.114 1.022-.166m0 0a47.66 47.66 0 013.478-.397m7.5 0V4.5a2.25 2.25 0 00-2.25-2.25h-3a2.25 2.25 0 00-2.25 2.25v.75m7.5 0h-7.5"/></svg>
@@ -73,9 +86,11 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="4" class="empty-row">No vendors found.</td></tr>
+                <tr><td colspan="6" class="empty-row">No products found.</td></tr>
             @endforelse
         </tbody>
     </table>
 </div>
+
+<div style="margin-top:16px;">{{ $products->withQueryString()->links() }}</div>
 @endsection

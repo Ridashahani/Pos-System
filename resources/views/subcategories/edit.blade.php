@@ -36,7 +36,7 @@
         width: 44px;
         height: 44px;
         border-radius: 10px;
-        background: #f5a524;
+        background: #2B7FFF;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -52,7 +52,7 @@
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 0.05em;
-        color: #f5a524;
+        color: #2B7FFF;
         margin: 0 0 2px;
         text-transform: uppercase;
     }
@@ -110,7 +110,7 @@
     .form-group input:focus,
     .form-group select:focus {
         outline: none;
-        border-color: #f5a524;
+        border-color: #2B7FFF;
         box-shadow: 0 0 0 3px rgba(245,165,36,0.15);
     }
     .form-group input.is-invalid,
@@ -145,8 +145,8 @@
     .btn-secondary:hover { background: #f9fafb; }
 
     .btn-save {
-        background: #f5a524;
-        color: #1f2937;
+        background: #2B7FFF;
+        color: white;
         border: none;
         padding: 10px 24px;
         border-radius: 8px;
@@ -154,7 +154,7 @@
         font-weight: 700;
         cursor: pointer;
     }
-    .btn-save:hover { background: #e6980f; }
+    .btn-save:hover { background: oklch(54.6% 0.245 262.881); }
 </style>
 @endpush
 
