@@ -24,6 +24,12 @@ class StockController extends Controller
             ->paginate(10)
             ->withQueryString();
 
+        $sliderProducts = Product::with(['vendor', 'category', 'subcategory', 'items.branch'])
+            ->where('quantity', '>', 0)
+            ->orderByDesc('quantity')
+            ->limit(8)
+            ->get();
+
         $baseQuery = Product::query()->where('quantity', '>', 0);
 
         $stats = [
@@ -34,6 +40,6 @@ class StockController extends Controller
             'low_stock' => (clone $baseQuery)->where('quantity', '<=', 5)->count(),
         ];
 
-        return view('stock.stock-in', compact('products', 'stats'));
+        return view('stock.stock-in', compact('products', 'stats', 'sliderProducts'));
     }
 }
